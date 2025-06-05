@@ -4,10 +4,8 @@ class Product {
   final String imagePath;
   final String description;
   final double price;
-  final bool inStock;
 
-  Product(
-    this.inStock, {
+  Product({
     required this.id,
     required this.name,
     required this.imagePath,
