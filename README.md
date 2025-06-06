@@ -1,16 +1,33 @@
-# minimart
+# minimart : Project name
 
-A new Flutter project.
+# About
 
-## Getting Started
+An E-Commerce Preview App. Built using local JSON for product data and provider for state management
 
-This project is a starting point for a Flutter application.
+# Details for submission
 
-A few resources to get you started if this is your first Flutter project:
+Tech stack used: Flutter framework & Dart Programming language.
+Provider for state management.
+Android SDK (for Android compilation)
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+# Setup/Run instructions
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+**Required**
+Flutter SDK installed
+VS Code or Android Studio with flutter extension
+Device/emulator connected
+
+1.  Clone the repository : git clone https://github.com/Devdeejay27/minimart.git
+2.  Install dependencies; flutter pub get then flutter run
+3.  To build the APK: flutter build apk --release
+
+          **OR**
+
+Run the app from the main.dart file, on windows, a shortcut to use is 'Ctrl + F5'.
+Run normally without debugging on your code editor, you can enable USB debugging on an android phone or use an android emulator or ios simulator.
+Files are arranged in folders for easy navigation.
+Comments are in the code for guidance.
+
+# Link to screenshots of compiled app
+
+[Minimart:Google drive link for screenshots](https://drive.google.com/drive/folders/1-1cAj8upWIvqc2ki4UNmIAs2WKmlnq3J?usp=sharing)
