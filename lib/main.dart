@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 void main() {
   runApp(
     ChangeNotifierProvider(
+      // to alert the cart provider
       create: (context) => Cart(),
       child: const MyApp(),
     ),
@@ -24,7 +25,9 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: const HomePage(),
       routes: {
+        // product clicked on home page, takes to details
         ProductDetails.routeName: (context) => const ProductDetails(),
+        // cart icon clicked, takes to cart page
         CartPage.routeName: (context) => const CartPage(),
       },
     );

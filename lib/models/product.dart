@@ -1,4 +1,5 @@
 class Product {
+  // requirements for every time a product class is called
   final String id;
   final String name;
   final String imagePath;

@@ -3,6 +3,7 @@ import 'package:minimart/models/cart.dart';
 import 'package:provider/provider.dart';
 
 class CartPage extends StatelessWidget {
+  //route to cart page
   static const routeName = '/cart-page';
   const CartPage({super.key});
 
@@ -13,15 +14,12 @@ class CartPage extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: const Color(0xFFFBFBFB),
-      body: CustomScrollView(
-        slivers: [
-          SliverAppBar(
-            pinned: true,
-            backgroundColor: const Color(0xFFFBFBFB),
-            elevation: 0,
-            automaticallyImplyLeading: false,
-            flexibleSpace: SafeArea(
-              child: Padding(
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              // custom appBar section
+              Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
                 child: Row(
@@ -38,7 +36,7 @@ class CartPage extends StatelessWidget {
                       child: const Padding(
                         padding: EdgeInsets.only(
                           top: 7.0,
-                          left: 2.0,
+                          left: 4.38,
                         ),
                         child: Text(
                           'Full Logo',
@@ -86,193 +84,231 @@ class CartPage extends StatelessWidget {
                   ],
                 ),
               ),
-            ),
-            toolbarHeight: 84,
-          ),
-          SliverToBoxAdapter(
-            child: Column(
-              children: [
-                // Cart Title
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: .0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      IconButton(
-                        onPressed: Navigator.of(context).pop,
-                        icon: const Icon(
+              // Divider after address
+              const Divider(
+                thickness: 1,
+                color: Color(0xFFE5E7EB),
+                height: 0,
+              ),
+              // your cart
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    GestureDetector(
+                      // back button pressed
+                      onTap: () => Navigator.of(context).pop(),
+                      child: const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 8.0),
+                        child: Icon(
                           Icons.arrow_back_ios,
-                          size: 16,
+                          size: 10,
+                          color: Color(0xFF64748B),
                         ),
                       ),
-                      const SizedBox(width: 10),
-                      const Text(
-                        'Your Cart',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w700,
-                          color: Color(0xFF000000),
-                        ),
+                    ),
+                    const SizedBox(width: 10),
+                    const Text(
+                      'Your Cart',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w700,
+                        color: Color(0xFF000000),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-                // Cart Items
-                cartItems.isEmpty
-                    ? const Center(
-                        child: Padding(
-                          padding: EdgeInsets.all(32.0),
-                          child: Text(
-                            'Your cart is empty',
-                            style: TextStyle(fontSize: 18),
-                          ),
+              ),
+              // items inside cart
+              cartItems.isEmpty
+                  ? const Center(
+                      child: Padding(
+                        padding: EdgeInsets.all(32.0),
+                        child: Text(
+                          'Your cart is empty',
+                          style: TextStyle(fontSize: 18),
                         ),
-                      )
-                    : ListView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: cartItems.length,
-                        itemBuilder: (context, index) {
-                          final productId = cartItems.keys.toList()[index];
-                          final cartItem = cartItems[productId]!;
-                          final product = cartItem['product'];
-                          final quantity = cartItem['quantity'];
+                      ),
+                    )
+                  //builds list of cart items
+                  : ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: cartItems.length,
+                      itemBuilder: (context, index) {
+                        final productId = cartItems.keys.toList()[index];
+                        final cartItem = cartItems[productId]!;
+                        final product = cartItem['product'];
+                        final quantity = cartItem['quantity'];
 
-                          return Card(
-                            shadowColor: const Color(0xFFF6F5F8),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15),
-                            ),
-                            margin: const EdgeInsets.symmetric(
-                              vertical: 8,
-                              horizontal: 12,
-                            ),
-                            elevation: 3,
-                            child: Padding(
-                              padding: const EdgeInsets.all(10),
-                              child: Row(
-                                children: [
-                                  // Product Image
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.circular(5.65),
-                                    child: Image.asset(
-                                      product.imagePath,
-                                      width: 102.87,
-                                      height: 106.15,
-                                      fit: BoxFit.cover,
-                                    ),
+                        return Container(
+                          margin: const EdgeInsets.symmetric(
+                            vertical: 8,
+                            horizontal: 12,
+                          ),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFF6F5F8),
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: Row(
+                              children: [
+                                // product image
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(5.65),
+                                  child: Image.asset(
+                                    product.imagePath,
+                                    width: 102.87,
+                                    height: 106.15,
+                                    fit: BoxFit.cover,
                                   ),
-                                  const SizedBox(width: 12),
-                                  // Product details & controls
-                                  Expanded(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          product.name,
-                                          style: const TextStyle(
-                                            fontFamily: 'SF Pro Text',
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w400,
-                                            color: Color(0xFF334155),
-                                          ),
+                                ),
+                                const SizedBox(width: 12),
+                                // product details & controls
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        product.name,
+                                        style: const TextStyle(
+                                          fontFamily: 'SF Pro Text',
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w400,
+                                          color: Color(0xFF334155),
                                         ),
-                                        const SizedBox(height: 4),
-                                        Text(
-                                          '\$${product.price.toStringAsFixed(2)}',
-                                          style: const TextStyle(
-                                            fontFamily: 'SF Pro Text',
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 17,
-                                            color: Color(0xFF334155),
-                                          ),
+                                      ),
+                                      const SizedBox(height: 4),
+                                      Text(
+                                        '\$${product.price.toStringAsFixed(2)}',
+                                        style: const TextStyle(
+                                          fontFamily: 'SF Pro Text',
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 17,
+                                          color: Color(0xFF334155),
                                         ),
-                                        const Text(
-                                          'In stock',
-                                          style: TextStyle(
-                                            fontFamily: 'SF Pro Text',
-                                            color: Color(0xFF10B981),
-                                            fontWeight: FontWeight.w400,
-                                            fontSize: 12,
-                                          ),
+                                      ),
+                                      const Text(
+                                        'In stock',
+                                        style: TextStyle(
+                                          fontFamily: 'SF Pro Text',
+                                          color: Color(0xFF10B981),
+                                          fontWeight: FontWeight.w400,
+                                          fontSize: 12,
                                         ),
-                                        const SizedBox(height: 10),
-                                        Row(
-                                          children: [
-                                            IconButton(
-                                              padding: const EdgeInsets.all(8),
-                                              onPressed: () {
-                                                cart.decreaseQuantity(
-                                                    product.id);
-                                              },
-                                              icon: const Icon(
-                                                Icons.remove_circle,
-                                                size: 32,
+                                      ),
+                                      const SizedBox(height: 10),
+                                      Row(
+                                        children: [
+                                          // minus button
+                                          GestureDetector(
+                                            //when pressed
+                                            onTap: () {
+                                              cart.decreaseQuantity(product.id);
+                                            },
+                                            child: Container(
+                                              width: 32,
+                                              height: 32,
+                                              decoration: const BoxDecoration(
                                                 color: Color(0xFFE2E8F0),
+                                                shape: BoxShape.circle,
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                    color: Color(0xFFE2E8F0),
+                                                    blurRadius: 2,
+                                                  ),
+                                                ],
+                                              ),
+                                              child: const Icon(
+                                                Icons.remove,
+                                                color: Color(0xFF64748B),
+                                                size: 20,
                                               ),
                                             ),
-                                            Text(
-                                              quantity.toString(),
-                                              style: const TextStyle(
-                                                fontSize: 12,
-                                                fontFamily: 'SF Pro Text',
-                                                fontWeight: FontWeight.w400,
-                                              ),
-                                              textAlign: TextAlign.center,
+                                          ),
+                                          const SizedBox(width: 20),
+                                          Text(
+                                            // quantity of the particular item
+                                            quantity.toString(),
+                                            style: const TextStyle(
+                                              fontSize: 12,
+                                              fontFamily: 'SF Pro Text',
+                                              fontWeight: FontWeight.w400,
                                             ),
-                                            IconButton(
-                                              onPressed: () {
-                                                cart.increaseQuantity(
-                                                    product.id);
-                                              },
-                                              icon: const Icon(
-                                                size: 32,
+                                            textAlign: TextAlign.center,
+                                          ),
+                                          const SizedBox(width: 20),
+                                          // plus button
+                                          GestureDetector(
+                                            // when pressed
+                                            onTap: () {
+                                              cart.increaseQuantity(product.id);
+                                            },
+                                            child: Container(
+                                              width: 32,
+                                              height: 32,
+                                              decoration: const BoxDecoration(
                                                 color: Colors.white,
-                                                Icons.add_circle,
+                                                shape: BoxShape.circle,
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                    color: Color(0x11000000),
+                                                    blurRadius: 2,
+                                                  ),
+                                                ],
+                                              ),
+                                              child: const Icon(
+                                                Icons.add,
+                                                color: Color(0xFF334155),
+                                                size: 20,
                                               ),
                                             ),
-                                            const SizedBox(width: 30),
-                                            // Delete icon
-                                            IconButton(
-                                              onPressed: () {
-                                                cart.removeFromCart(product.id);
-                                              },
-                                              icon: const Icon(
+                                          ),
+                                          const SizedBox(width: 50),
+                                          // Delete icon
+                                          GestureDetector(
+                                            // when delete is pressed
+                                            onTap: () {
+                                              cart.removeFromCart(product.id);
+                                            },
+                                            child: Container(
+                                              width: 32,
+                                              height: 32,
+                                              decoration: const BoxDecoration(
+                                                color: Colors.white,
+                                                shape: BoxShape.circle,
+                                              ),
+                                              child: const Icon(
                                                 Icons.delete_outline_rounded,
-                                                color: Colors.white,
+                                                color: Color(0xFF999999),
+                                                size: 19.64,
                                               ),
                                             ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
                                   ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
-                          );
-                        },
-                      ),
-                const SizedBox(height: 10),
-                // Bottom Bar Info
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(
-                        blurRadius: 5,
-                        color: Colors.black.withOpacity(0.1),
-                        offset: const Offset(0, -1),
-                      ),
-                    ],
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
+                          ),
+                        );
+                      },
+                    ),
+              const SizedBox(height: 10),
+              // order info section
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                child: Column(
+                  children: [
+                    const Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
                         'Order Info',
                         style: TextStyle(
                           fontWeight: FontWeight.w700,
@@ -281,55 +317,124 @@ class CartPage extends StatelessWidget {
                           color: Colors.black,
                         ),
                       ),
-                      const SizedBox(width: 15),
-                      Text(
-                        'Subtotal: ${cart.totalCartItems - 10}',
-                        style: const TextStyle(
-                          fontFamily: 'IBM Plex Sans',
-                          fontWeight: FontWeight.w500,
-                          fontSize: 12,
-                          color: Colors.black,
+                    ),
+                    const SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          'Subtotal',
+                          style: TextStyle(
+                            fontFamily: 'IBM Plex Sans',
+                            fontWeight: FontWeight.w500,
+                            fontSize: 12,
+                            color: Colors.black,
+                          ),
                         ),
-                      ),
-                      const Text(
-                        'Shipping: \$10',
-                        style: TextStyle(
-                          fontFamily: 'IBM Plex Sans',
-                          fontWeight: FontWeight.w500,
-                          fontSize: 12,
-                          color: Colors.black,
+                        Text(
+                          // when cart is empty, show zero, if not show value
+                          '\$${cartItems.isEmpty ? 0 : cart.totalCartItems}',
+                          style: const TextStyle(
+                            fontFamily: 'IBM Plex Sans',
+                            fontWeight: FontWeight.w500,
+                            fontSize: 12,
+                            color: Colors.black,
+                          ),
                         ),
-                      ),
-                      Text(
-                        'Total: ${cart.totalCartItems}',
-                        style: const TextStyle(
-                          fontFamily: 'IBM Plex Sans',
-                          fontSize: 12,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.black,
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          'Shipping',
+                          style: TextStyle(
+                            fontFamily: 'IBM Plex Sans',
+                            fontWeight: FontWeight.w500,
+                            fontSize: 12,
+                            color: Colors.black,
+                          ),
                         ),
-                      ),
-                      const SizedBox(width: 20),
-                      ElevatedButton(
-                        onPressed: () {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                                content: Text('Checkout coming soon')),
-                          );
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.blue,
+                        Text(
+                          // when cart is empty, show zero, if not show value
+                          '\$${cartItems.isEmpty ? 0 : 10}',
+                          style: const TextStyle(
+                            fontFamily: 'IBM Plex Sans',
+                            fontWeight: FontWeight.w500,
+                            fontSize: 12,
+                            color: Colors.black,
+                          ),
                         ),
-                        child: Text('Checkout : ${cart.totalCartItems}'),
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          'Total',
+                          style: TextStyle(
+                            fontFamily: 'IBM Plex Sans',
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black,
+                          ),
+                        ),
+                        Text(
+                          // when cart is empty, show zero, if not show value
+                          '\$${cartItems.isEmpty ? 0 : (cart.totalCartItems + 10)}',
+                          style: const TextStyle(
+                            fontFamily: 'IBM Plex Sans',
+                            fontSize: 14,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 16),
+              //checkout button
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: SizedBox(
+                  width: double.infinity,
+                  height: 40,
+                  child: ElevatedButton(
+                    //cart empty, button doesn't show
+                    onPressed: cartItems.isEmpty
+                        ? null
+                        : () {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                  content: Text('Checkout coming soon')),
+                            );
+                          },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF60B5FF),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
                       ),
-                    ],
+                    ),
+                    child: Text(
+                      'Checkout (\$${cartItems.isEmpty ? 0 : (cart.totalCartItems + 10)})',
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w700,
+                        fontFamily: 'IBM Plex Sans',
+                      ),
+                    ),
                   ),
                 ),
-                const SizedBox(height: 20),
-              ],
-            ),
+              ),
+              const SizedBox(height: 20),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

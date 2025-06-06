@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:minimart/models/product.dart';
 
+//provider class
 // manages cart state
 class Cart with ChangeNotifier {
   // Stores product ID and a map containing product and quantity
@@ -9,19 +10,17 @@ class Cart with ChangeNotifier {
   // getter to retrieve cart items
   Map<String, Map<String, dynamic>> get items => _items;
 
-  int get itemCCount => _items.length;
+  int get itemCount => _items.length;
 
-  // adding items to cart
+  // adding items to cart (only once)
   void addToCart(Product product) {
-    if (_items.containsKey(product.id)) {
-      _items[product.id]!['quantity'] += 1;
-    } else {
+    if (!_items.containsKey(product.id)) {
       _items[product.id] = {
         'product': product,
         'quantity': 1,
       };
+      notifyListeners();
     }
-    notifyListeners();
   }
 
   // removing from cart
@@ -50,11 +49,13 @@ class Cart with ChangeNotifier {
     }
   }
 
-  // total, counting quantity, not just different products
-  int get totalCartItems {
-    int total = 0;
+  // total amount (sum of price * quantity)
+  double get totalCartItems {
+    double total = 0.0;
     _items.forEach((_, value) {
-      total += value['quantity'] as int;
+      final product = value['product'] as Product;
+      final quantity = value['quantity'] as int;
+      total += product.price * quantity;
     });
     return total;
   }
